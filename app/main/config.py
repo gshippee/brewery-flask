@@ -18,9 +18,9 @@ PUMP_2 = 11
 HEATER_2 = 6 
 PUMP_3_3_ENABLE = 14
 PUMP_3_3 = 7
-PUMP_3_4_ENABLE = 12
+PUMP_3_4_ENABLE = 8
 PUMP_3_4 = 13
-SOLENOID = 8
+SOLENOID = 12
 
 NUM_RELAYS = 16
 
@@ -66,6 +66,15 @@ load_tasks = False
 heat_on_1 = False
 heat_on_2 = False
 
+relay_map = {'9': 1,
+        '10': 2,
+        '11': 4,
+        '12': 8,
+        '13' : 16,
+        '14' : 32,
+        '15' : 64,
+        '16' : 128}
+
 if not DEBUG:
     base_dir = '/sys/bus/w1/devices/'
     device_folders = glob.glob(base_dir+'28*')
@@ -83,6 +92,7 @@ class Relay:
     def is_active(self):
         return self.active
     def turn_on(self):
+        print('TURNING ON ', self.relay_num)
         if self.relay_num <= 8:
             if not DEBUG:
                 h.write([0x00,0xff,int(str(self.relay_num),16)])
@@ -101,6 +111,7 @@ class Relay:
         return self.relay_num
 
     def turn_off(self):
+        print('TURNING OFF ', self.relay_num)
         if self.relay_num <= 8:
             if not DEBUG:
                 h.write([0x00,0xfd,int(str(self.relay_num),16)])
@@ -119,7 +130,7 @@ class Relay:
         return self.relay_num
 
 relays = []
-for i in range(1,NUM_RELAYS):
+for i in range(0,NUM_RELAYS):
     relays.append(Relay(i))
 
 relay_states = [0 for relay in relays]

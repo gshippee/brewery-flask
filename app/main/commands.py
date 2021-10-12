@@ -443,6 +443,18 @@ def pump_3_4(duration):
     config.task_complete = True
     return
 
+def relay_test(args):
+    relay, duration = args.split('|')
+    relay = int(relay)
+    duration = float(duration)
+    if config.sub_task == 0:
+        config.relays[relay].turn_on()
+        config.sub_task_str = 'Wait'
+        if wait(config.duration,config.duration+duration) == 'Interrupt':
+            return
+        config.relays[relay].turn_off()
+    config.task_complete = True
+    return
 
 def skip_task(num_skips=1):
         config.task_marker = config.task_marker + num_skips
@@ -498,4 +510,8 @@ def run_task():
 
     if config.task == 'set_temp_2_no_recirc':
         config.thread = Thread(target = set_temp_1, args = (config.params,))
+        config.thread.start()
+
+    if config.task == 'relay_test':
+        config.thread = Thread(target = relay_test, args = (config.params,))
         config.thread.start()

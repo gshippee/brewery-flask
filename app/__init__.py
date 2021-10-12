@@ -30,5 +30,6 @@ def create_app(debug=True):
     print('Initiating database')
     db.init_app(app)
 
+    app.config['CORS_HEADERS']='Content-Type'
     socketio.init_app(app, cors_allowed_origins='*')
     return app

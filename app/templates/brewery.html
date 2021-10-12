@@ -244,10 +244,11 @@
             <option value="4" >pump_2_3</option>
             <option value="5" >pump_3_3</option>
             <option value="6" >pump_3_4</option>
-            <option value="6" >set_temp_1</option>
-            <option value="6" >set_temp_2</option>
-            <option value="6" >set_temp_2_drop</option>
-            <option value="6" >set_temp_2_no_recirc</option>
+            <option value="7" >set_temp_1</option>
+            <option value="8" >set_temp_2</option>
+            <option value="9" >set_temp_2_drop</option>
+            <option value="10" >set_temp_2_no_recirc</option>
+            <option value="11" >relay_test</option>
         </select>
             <input type="text" id="parameters" value="" />
             <button onclick="add()">Add!</button>
@@ -262,7 +263,7 @@
             <button onclick="quit()">Quit!</button>
             </div>
 		</div>
-        <form action = "http://localhost:5000/upload" method = "POST" enctype = "multipart/form-data">
+        <form action = "http://192.168.4.94:5000/upload" method = "POST" enctype = "multipart/form-data">
             <input type = "file" name = "File" />
             <input type = "submit" value = "Submit" />
         </form>
