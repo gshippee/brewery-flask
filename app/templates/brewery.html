@@ -33,6 +33,7 @@
                     socket.emit('heartbeat_check', {});
                 });
                 socket.on('monitor', function(msg) {
+                    console.log(msg)
                     const duration = document.getElementById("duration");
                     duration.innerHTML = 'Duration: ' + msg.duration;
                     const current_task = document.getElementById("current_task");
@@ -237,9 +238,16 @@
             <option value="1" selected="selected">pump_1_1</option>
             <option value="2" >pump_1_2</option>
             <option value="3" >pump_2_2</option>
+            <option value="3" >pump_2_2_no_switch</option>
+            <option value="3" >pump_fr_2_2</option>
+            <option value="3" >pump_fr_2_3</option>
             <option value="4" >pump_2_3</option>
             <option value="5" >pump_3_3</option>
             <option value="6" >pump_3_4</option>
+            <option value="6" >set_temp_1</option>
+            <option value="6" >set_temp_2</option>
+            <option value="6" >set_temp_2_drop</option>
+            <option value="6" >set_temp_2_no_recirc</option>
         </select>
             <input type="text" id="parameters" value="" />
             <button onclick="add()">Add!</button>

@@ -30,5 +30,5 @@ def create_app(debug=True):
     print('Initiating database')
     db.init_app(app)
 
-    socketio.init_app(app)
+    socketio.init_app(app, cors_allowed_origins='*')
     return app

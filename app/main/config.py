@@ -9,13 +9,13 @@ def init_db():
 pool = None
 DEBUG = True
 
-HEATER_POT_1 = 1
+HEATER_1 = 1
 PUMP_1_1 = 2
 PUMP_1_2 = 3
 PUMP_2_2_SWITCH = 4
 PUMP_2_3_SWITCH = 5
 PUMP_2 = 11
-HEATER_POT_3 = 6 
+HEATER_2 = 6 
 PUMP_3_3_ENABLE = 14
 PUMP_3_3 = 7
 PUMP_3_4_ENABLE = 12
@@ -63,6 +63,8 @@ task_running = False
 duration = 0 
 message = ''
 load_tasks = False
+heat_on_1 = False
+heat_on_2 = False
 
 if not DEBUG:
     base_dir = '/sys/bus/w1/devices/'

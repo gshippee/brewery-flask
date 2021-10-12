@@ -39,17 +39,15 @@ counter = 0
 @socketio.on('heartbeat_check', namespace='/brewery')
 def hearbeat(message):
     sleep(.1)
-    print(config.tasks)
 
     monitor_dict = {'threads': active_count(),\
         'duration': round(config.duration,1),\
         'current_task': config.task,\
-        'subtask': config.sub_task_str,\
+        'sub_task_str': config.sub_task_str,\
         'relay_states': config.relay_states,\
         'running': config.counter_running}
     emit('monitor', monitor_dict)
 
-    print(config.load_tasks)
     if config.load_tasks:
         config.load_tasks = False
         task_str = ['|'.join(task) for task in config.tasks]
@@ -78,18 +76,17 @@ def hearbeat(message):
     counter+=1
     if counter %10 == 0:
         commands.print_debug()
-
-        if not config.DEBUG:
-            config.temps = config.pool.map(commands.read_temp, config.device_files)
-        else:
-            config.temps = config.pool.map(commands.read_temp_debug, config.device_files)
-        datetime_now = datetime.now().strftime(config.DATE_FMT)
-        print(datetime_now, config.temps[0])
-
         db = get_db()
-        db.execute('INSERT INTO brewery_temps (brew_run, temps, date_time) VALUES (?, ?, ?)', ('DEBUG', np.array(config.temps), datetime_now ))
-        db.commit()	
-#        emit('update', {'x': [datetime_now], 'y': [config.temps[0]]})
+        results = db.execute('SELECT * FROM brewery_temps WHERE ID = (SELECT MAX(ID) FROM brewery_temps)').fetchall()[0]
+        print(results)
+        try:
+            datetime_now = results['date_time']
+            config.temps = results['temps']
+        except Exception as e:
+            print(e)
+            datetime_now = datetime.now().strftime(DATE_FMT)
+            config.temps = [0,0,0,0,0]
+        print(config.temps, datetime_now)
         emit('update', {'time': [datetime_now], 'temp1': [config.temps[0]], 'temp2': [config.temps[1]], 'temp3':[config.temps[2]], 'temp4':[config.temps[3]], 'temp5': [config.temps[4]]})
     config.start_loop = time()
     emit('heartbeat', {})

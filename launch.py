@@ -1,12 +1,16 @@
 #!/bin/env python
 from app import create_app, socketio
-from app.main import config
-from multiprocessing import Pool
+import atexit
 app = create_app(debug=True)
+def OnExitApp(user):
+    f = open("write_db.txt","w")
+    f.write('dont_write')
+    f.close()
+    print(user, " exit Flask application")
+
+atexit.register(OnExitApp, user='brewery')
 if __name__ == '__main__':
-    config.pool = Pool(len(config.device_files))
-    try:
-        socketio.run(app)
-    except KeyboardInterrupt:
-        pool.close()
-        pool.join()
+    f = open("write_db.txt","w")
+    f.write('write')
+    f.close()
+    socketio.run(app, host="0.0.0.0")
